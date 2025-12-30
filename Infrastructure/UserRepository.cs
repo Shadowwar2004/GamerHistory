@@ -35,4 +35,8 @@ public class UserRepository (UserContext userContext) : IUserRepository
             Role = user.Role,
         };
     }
+    public User? GetByEmail(string email)
+    {
+        return userContext.Users.FirstOrDefault(u => u.Email == email);
+    }
 }

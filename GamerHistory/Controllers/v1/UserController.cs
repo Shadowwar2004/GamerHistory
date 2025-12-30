@@ -49,16 +49,14 @@ public class UserController(IUserRepository userRepository): ControllerBase
         if (string.IsNullOrWhiteSpace(input.Password))
             return BadRequest("pas de mot de passe vide ");
         
-        string hash = BCrypt.Net.BCrypt.HashPassword(input.Password);
-        byte[] hashbyte=Encoding.UTF8.GetBytes(hash);
         var user = new User
         {
             Pseudo = input.Pseudo,
             Email = input.Email,
-            Password = hashbyte,
+            Password = Encoding.UTF8.GetBytes(input.Password), // Juste conversion, pas de Hash ici
             Role = "User"
         };
-
+        
         var saved = userRepository.Save(user);
         var read = new UserReadDto
         {
@@ -67,6 +65,7 @@ public class UserController(IUserRepository userRepository): ControllerBase
             Email = saved.Email,
             Role = saved.Role
         };
+        
         return CreatedAtAction(nameof(GetById), new { id = read.Id }, read);
     }
 }

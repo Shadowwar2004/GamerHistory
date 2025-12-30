@@ -7,4 +7,6 @@ public interface IUserRepository
     User? GetById(int id);
     
     User Save(User user);
+    
+    User? GetByEmail(string email);
 }
