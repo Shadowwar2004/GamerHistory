@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GamerHistory.Controllers.v1;
 
 [ApiController]
-[Route("/session")] // Route requise par l'exercice 
+[Route("/session")] // Route requise  
 public class SessionController(IUserRepository userRepository, JwtService jwtService) : ControllerBase
 {
     [HttpPost]
@@ -19,8 +19,6 @@ public class SessionController(IUserRepository userRepository, JwtService jwtSer
         if (user is null) return Unauthorized("Utilisateur inconnu.");
 
         // 2. Vérifier le mot de passe
-        // Attention: Dans User.cs, le mot de passe est stocké en byte[]. 
-        // Ton UserRepository stocke le HASH converti en bytes.
         string storedHash = Encoding.UTF8.GetString(user.Password);
         
         bool isPasswordValid = BCrypt.Net.BCrypt.Verify(loginDto.Password, storedHash);
@@ -29,7 +27,7 @@ public class SessionController(IUserRepository userRepository, JwtService jwtSer
         // 3. Générer le JWT
         var token = jwtService.GenerateToken(user);
 
-        // 4. Stocker dans un Cookie HttpOnly [cite: 29]
+        // 4. Stocker dans un Cookie HttpOnly 
         Response.Cookies.Append("jwt", token, new CookieOptions
         {
             HttpOnly = true,
