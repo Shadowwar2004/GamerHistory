@@ -12,7 +12,8 @@ public class UserContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Support> Supports { get; set; }
     public DbSet<Game> Games { get; set; }
-
+    
+    public DbSet<Session> Sessions { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -82,6 +83,28 @@ public class UserContext : DbContext
             // Contrainte unique composite : Nom + SupportId
             // Empêche d'avoir le même jeu deux fois sur le même support
             builder.HasIndex(g => new { g.Nom, g.SupportId }).IsUnique();
+        });
+        
+        modelBuilder.Entity<Session>(builder =>
+        {
+            builder.ToTable("Sessions");
+            builder.HasKey(x => x.Id);
+
+            builder.Property(x => x.Temps).IsRequired();
+            builder.Property(x => x.DateRecord)
+                .HasColumnName("Date_record") 
+                .IsRequired();
+
+            // Relations
+            builder.HasOne(s => s.User)
+                .WithMany() 
+                .HasForeignKey(s => s.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(s => s.Game)
+                .WithMany()
+                .HasForeignKey(s => s.GameId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

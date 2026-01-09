@@ -20,6 +20,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 // Ajout des nouveaux repositories pour les jeux et supports
 builder.Services.AddScoped<ISupportRepository, SupportRepository>();
 builder.Services.AddScoped<IGameRepository, GameRepository>();
+builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 // Service JWT (que tu as créé dans Infrastructure)
 builder.Services.AddScoped<JwtService>();
 

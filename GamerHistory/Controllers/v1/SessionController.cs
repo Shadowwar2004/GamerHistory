@@ -36,7 +36,8 @@ public class SessionController(IUserRepository userRepository, JwtService jwtSer
             Expires = DateTime.Now.AddMinutes(60)
         });
 
-        return CreatedAtAction(nameof(Login), new { message = "Authentifié" });
+        // Dans Login return :
+        return Ok(new { message = "Authentifié", userId = user.Id }); 
     }
 
     [HttpDelete]
