@@ -17,7 +17,9 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<UserContext>(o => o.UseSqlServer(builder.Configuration.GetConnectionString("GamerHistory")));
 builder.Services.AddScoped<UserContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-
+// Ajout des nouveaux repositories pour les jeux et supports
+builder.Services.AddScoped<ISupportRepository, SupportRepository>();
+builder.Services.AddScoped<IGameRepository, GameRepository>();
 // Service JWT (que tu as créé dans Infrastructure)
 builder.Services.AddScoped<JwtService>();
 
